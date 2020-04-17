@@ -54,7 +54,7 @@ Modern PHP applications now store credentials, such as DB constants, in a ".env"
     DB_NAME=evote
     ```
   
-- at present, the `pdo-crud-for-free-repositories` library doesn't automatically load from a **dotenv** (".env") file, in the next release if it detects such a file it will load the DB constants from there. For now we have to load the values from `.env` and set the constants. We can do this in a ew class `/src/DotEnvLoader.php` with a single method `loadDBConstantsFromDotenv()`:
+- at present, the `pdo-crud-for-free-repositories` library doesn't automatically load from a **dotenv** (".env") file, in the next release if it detects such a file it will load the DB constants from there. For now we have to load the values from `.env` and set the constants. We can do this in a new class `/src/DotEnvLoader.php` with a single method `loadDBConstantsFromDotenv()`:
     
     ```php
     <?php
