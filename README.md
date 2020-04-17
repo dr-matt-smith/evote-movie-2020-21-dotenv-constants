@@ -101,7 +101,7 @@ Modern PHP applications now store credentials, such as DB constants, in a ".env"
     }
     ```
   
-- also we'll be doing the same for our fixtures files `/db/migrateAndLoadUserFixtures.php` & '/db/migrationAndFixtures.php':
+- also we'll be doing the same for our fixtures files `/db/migrateAndLoadUserFixtures.php` & `/db/migrationAndFixtures.php`:
 
     ```php
     <?php
