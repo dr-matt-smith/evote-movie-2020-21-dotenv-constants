@@ -1,9 +1,14 @@
 <?php
-require_once __DIR__ . '/../config/dbConstants.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Tudublin\Movie;
 use Tudublin\MovieRepository;
+use \Tudublin\DotEnvLoader;
+
+// load DB constants from DOTENV
+$dotEnvLoader = new DotEnvLoader();
+$dotEnvLoader->loadDBConstantsFromDotenv();
+
 
 $movieRespository = new MovieRepository();
 

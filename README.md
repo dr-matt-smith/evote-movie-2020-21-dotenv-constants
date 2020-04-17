@@ -54,31 +54,39 @@ Modern PHP applications now store credentials, such as DB constants, in a ".env"
     DB_NAME=evote
     ```
   
-- at present, the `pdo-crud-for-free-repositories` library doesn't automatically load from a dotenv file, in the next release if it detects such a file it will load the DB constants from there. For now we have to load the values from `.env` and set the constants. We can do this in a `WebApplication` method `loadDBConstantsFromDotenv()`:
-
+- at present, the `pdo-crud-for-free-repositories` library doesn't automatically load from a **dotenv** (".env") file, in the next release if it detects such a file it will load the DB constants from there. For now we have to load the values from `.env` and set the constants. We can do this in a ew class `/src/DotEnvLoader.php` with a single method `loadDBConstantsFromDotenv()`:
+    
     ```php
-    public function loadDBConstantsFromDotenv()
+    <?php
+    namespace Tudublin;
+    
+    use Symfony\Component\Dotenv\Dotenv;
+    
+    class DotEnvLoader
     {
-        // load dotenv file
-        $dotenv = new Dotenv();
-        $dotenv->load(__DIR__.'/../.env');
+        public function loadDBConstantsFromDotenv()
+        {
+            // load dotenv file
+            $dotenv = new Dotenv();
+            $dotenv->load(__DIR__.'/../.env');
     
-        // extract values
-        $user = $_ENV['DB_USER'];
-        $password = $_ENV['DB_PASS'];
-        $host = $_ENV['DB_HOST'];
-        $port = $_ENV['DB_PORT'];
-        $database = $_ENV['DB_NAME'];
+            // extract values
+            $user = $_ENV['DB_USER'];
+            $password = $_ENV['DB_PASS'];
+            $host = $_ENV['DB_HOST'];
+            $port = $_ENV['DB_PORT'];
+            $database = $_ENV['DB_NAME'];
     
-        // declare global constants for pdo-crud-for-free-repositories
-        define('DB_USER', $user);
-        define('DB_PASS', $password);
-        define('DB_HOST', $host . ":" . $port);
-        define('DB_NAME', $database);
+            // declare global constants for pdo-crud-for-free-repositories
+            define('DB_USER', $user);
+            define('DB_PASS', $password);
+            define('DB_HOST', $host . ":" . $port);
+            define('DB_NAME', $database);
+        }
     }
     ```
 
-- finally, we need to invoke this new method from the `WebApplication` constructor method:
+- finally, we need to create a `DotEnvLoader` object and invoke this new method from the `WebApplication` constructor method:
 
     ```php
     public function __construct()
@@ -87,7 +95,23 @@ Modern PHP applications now store credentials, such as DB constants, in a ".env"
         $this->movieController = new MovieController();
         $this->loginController = new LoginController();
         $this->adminContoller = new AdminController();
-        $this->loadDBConstantsFromDotenv();
+
+        $dotEnvLoader = new DotEnvLoader();
+        $dotEnvLoader->loadDBConstantsFromDotenv();    
     }
     ```
   
+- also we'll be doing the same for our fixtures files `/db/migrateAndLoadUserFixtures.php` & '/db/migrationAndFixtures.php':
+
+    ```php
+    <?php
+    require_once __DIR__ . '/../vendor/autoload.php';
+    
+    use Tudublin\DotEnvLoader;
+    // ... other USER statements here for whichever Repository is being used ...
+    
+    // load DB constants from DOTENV
+    $dotEnvLoader = new DotEnvLoader();
+    $dotEnvLoader->loadDBConstantsFromDotenv();
+    ```
+

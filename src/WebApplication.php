@@ -17,7 +17,9 @@ class WebApplication
         $this->movieController = new MovieController();
         $this->loginController = new LoginController();
         $this->adminContoller = new AdminController();
-        $this->loadDBConstantsFromDotenv();
+
+        $dotEnvLoader = new DotEnvLoader();
+        $dotEnvLoader->loadDBConstantsFromDotenv();
     }
 
     public function loadDBConstantsFromDotenv()

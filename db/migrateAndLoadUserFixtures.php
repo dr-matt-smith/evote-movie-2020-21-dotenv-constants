@@ -1,9 +1,14 @@
 <?php
-require_once __DIR__ . '/../config/dbConstants.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use Tudublin\DotEnvLoader;
 use Tudublin\UserRepository;
 use Tudublin\User;
+
+// load DB constants from DOTENV
+$dotEnvLoader = new DotEnvLoader();
+$dotEnvLoader->loadDBConstantsFromDotenv();
+
 
 //--------- MOVIE ---------
 // (1) drop then create table
